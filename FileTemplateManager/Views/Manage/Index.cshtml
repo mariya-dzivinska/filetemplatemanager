@@ -1,0 +1,10 @@
+﻿@{
+    ViewBag.Title = "File Template Manager";
+}
+
+<h2>Index</h2>
+
+@using (Html.BeginForm("Save", "Manage"))
+{
+	<input type="Submit" name="btnSave" value="Save" />
+}
