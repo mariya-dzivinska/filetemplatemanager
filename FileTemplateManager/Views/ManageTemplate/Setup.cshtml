@@ -1,0 +1,52 @@
+﻿@model FileTemplateManager.Models.TemplateModel
+@using FileTemplateManager.Models
+
+@{
+	ViewBag.Title = "Setup";
+}
+
+<h2>Setup</h2>
+
+@using (Html.BeginForm("Setup", "ManageTemplate"))
+{
+	<p>@Html.LabelFor(f => f.SampleFileName)</p>
+	
+	foreach (AvaliableFields field in Model.SelectedFields)
+	{
+	<p>
+		@Html.ListBox(
+			"selectedValues",
+			Model.Fields
+				.Where(x => x.IsUsed == false || x.Field == field)
+				.Select(x => new SelectListItem
+				{
+					Text = x.Field.ToString(),
+					Value = x.Field.ToString(),
+					Selected = field == x.Field
+				})
+			, new { onchange = "this.form.submit();" }
+		)
+
+	</p>
+	}
+	
+	<p>
+
+		@Html.DropDownListFor(
+			x => x.Separator,
+			Enum.GetValues(typeof(Separators))
+				.Cast<Separators>()
+				.Select(x => new SelectListItem
+				{
+					Value = x.ToString(),
+					Text = x.ToString(),
+					Selected = x == Model.Separator
+				}),
+			new { onchange = "this.form.submit();" }
+		)
+	</p>
+	<p>
+		<input type="submit" value="Save" />
+	</p>
+}
+

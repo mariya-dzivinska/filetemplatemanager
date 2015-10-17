@@ -6,17 +6,12 @@ using System.Web.Mvc;
 
 namespace FileTemplateManager.Controllers
 {
-	public class ManageController : Controller
+	public class AnswerController : Controller
 	{
-		public ActionResult Index()
+		public ActionResult SetAnswer()
 		{
 			return View();
 		}
 
-		[HttpPost]
-		public string Save()
-		{
-			return "Hello world!";
-		}
 	}
 }
