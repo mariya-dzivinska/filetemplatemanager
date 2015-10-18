@@ -20,12 +20,12 @@ namespace FileTemplateManager.Models
 
 		public TemplateModel(AvaliableFields[] selectedFields, Separators separator)
 		{
-			SelectedFields = selectedFields;
+			SelectedFields = selectedFields.ToList();
 
 			Separator = separator;
 		}
 
-		public IEnumerable<AvaliableFields> SelectedFields { get; set; }
+		public List<AvaliableFields> SelectedFields { get; set; }
 
 		public List<FieldInfo> Fields
 		{

@@ -31,10 +31,28 @@ namespace FileTemplateManager.Controllers
 					.Split('-')
 					.Select(x => Enum.Parse(typeof(AvaliableFields), x))
 					.Cast<AvaliableFields>()
+					.ToList()
 			};
 
-			var fieldToRemove = model.SelectedFields.ElementAt(id);
-			model.SelectedFields = model.SelectedFields.Except(new List<AvaliableFields>() { fieldToRemove });
+			model.SelectedFields.RemoveAt(id);
+			return PartialView("SetupForm", model);
+		}
+
+		[HttpPost]
+		public ActionResult AddField(string selectedFields, Separators separator)
+		{
+			var model = new TemplateModel()
+			{
+				Separator = separator,
+				SelectedFields = selectedFields
+					.Split('-')
+					.Select(f => Enum.Parse(typeof(AvaliableFields), f))
+					.Cast<AvaliableFields>()
+					.ToList()
+			};
+
+			model.SelectedFields.Add(model.Fields.First(f => f.IsUsed == false).Field);
+
 			return PartialView("SetupForm", model);
 		}
 	}
