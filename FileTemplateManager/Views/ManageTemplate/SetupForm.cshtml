@@ -1,0 +1,56 @@
+﻿@model FileTemplateManager.Models.TemplateModel
+@using FileTemplateManager.Models
+
+<p>@Html.LabelFor(f => f.SampleFileName)</p>
+<p>@Html.DisplayTextFor(f => f.SampleFileName)</p>
+
+@{
+	int i = 0;
+	foreach (AvaliableFields field in Model.SelectedFields)
+	{
+		<p>
+		@Html.DropDownList(
+			"Select" + i,
+			Model.Fields
+				.Where(x => x.IsUsed == false || x.Field == field)
+				.Select(x => new SelectListItem
+				{
+					Text = x.Field.ToString(),
+					Value = x.Field.ToString(),
+					Selected = field == x.Field
+				})
+			, new { onchange = "$('#Save').click();", Name = "SelectedFields", @class = "form-control" }
+		)
+
+		@Ajax.ActionLink(
+			"X",
+			"RemoveField",
+			new { controller = "ManageTemplate", action = "RemoveField", id = i, Separator = Model.Separator, SelectedFields = String.Join("-", Model.SelectedFields.Select(x => (int)x).ToArray())},
+			new AjaxOptions()
+			{
+				HttpMethod = "POST",
+				InsertionMode = InsertionMode.Replace,
+				UpdateTargetId = "result"
+			},
+			new { @class = "btn btn-default" }
+		)
+
+		@{i++;}
+		</p>
+
+	}
+	<p>
+	@Html.DropDownListFor(
+		x => x.Separator,
+		Enum.GetValues(typeof(Separators))
+			.Cast<Separators>()
+			.Select(x => new SelectListItem
+			{
+				Value = x.ToString(),
+				Text = x.ToString(),
+				Selected = x == Model.Separator
+			}),
+		new { onchange = "$('#Save').click();", @class = "form-control" }
+	)
+	</p>
+}

@@ -15,29 +15,27 @@ namespace FileTemplateManager.Controllers
 			return View(model);
 		}
 
-		//[HttpPost]
-		//public ActionResult Setup(TemplateModel result)
-		//{
-		//	var model = new TemplateModel();
-		//	return View(model);
-		//}
-
 		[HttpPost]
-		public ActionResult Setup(AvaliableFields[] selectedValues, Separators separator)
+		public ActionResult Setup(TemplateModel model)
 		{
-			var model = new TemplateModel(selectedValues, separator);
-			return View(model);
-		}
-
-		private void UpdateSampleFileName(List<FieldInfo> fields)
-		{
-			throw new NotImplementedException();
+			return PartialView("SetupForm", model);
 		}
 
 		[HttpPost]
-		public string Save()
+		public ActionResult RemoveField(int id, string selectedFields, Separators separator)
 		{
-			return "Hello world!";
+			TemplateModel model = new TemplateModel
+			{
+				Separator = separator,
+				SelectedFields = selectedFields
+					.Split('-')
+					.Select(x => Enum.Parse(typeof(AvaliableFields), x))
+					.Cast<AvaliableFields>()
+			};
+
+			var fieldToRemove = model.SelectedFields.ElementAt(id);
+			model.SelectedFields = model.SelectedFields.Except(new List<AvaliableFields>() { fieldToRemove });
+			return PartialView("SetupForm", model);
 		}
 	}
 }

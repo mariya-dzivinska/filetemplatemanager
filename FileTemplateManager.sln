@@ -1,7 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileTemplateManager", "FileTemplateManager\FileTemplateManager.csproj", "{AFCE7E46-824E-4BDB-9F5C-CFA1DA51F438}"
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileTemplateManager", "FileTemplateManager\FileTemplateManager.csproj", "{6940EA86-B997-45FD-8F8D-07B81729D6CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{AFCE7E46-824E-4BDB-9F5C-CFA1DA51F438}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AFCE7E46-824E-4BDB-9F5C-CFA1DA51F438}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AFCE7E46-824E-4BDB-9F5C-CFA1DA51F438}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AFCE7E46-824E-4BDB-9F5C-CFA1DA51F438}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6940EA86-B997-45FD-8F8D-07B81729D6CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6940EA86-B997-45FD-8F8D-07B81729D6CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6940EA86-B997-45FD-8F8D-07B81729D6CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6940EA86-B997-45FD-8F8D-07B81729D6CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
