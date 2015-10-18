@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FileTemplateManager.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,6 +12,12 @@ namespace FileTemplateManager.Controllers
 		public ActionResult Index()
 		{
 			return View();
+		}
+
+		public ActionResult SetAnswer()
+		{
+			var model = new AnswerModel();
+			return View(model);
 		}
 	}
 }
