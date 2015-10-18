@@ -1,0 +1,100 @@
+﻿@model FileTemplateManager.Models.TemplateModel
+@using FileTemplateManager.Models
+
+<table id="tableFields" class="table table-bordered">
+	<tbody id="tableBody">
+		<tr>
+			<td>@Html.Label("Sample File Name")</td>
+			<td colspan="2">@Html.DisplayTextFor(f => f.SampleFileName)</td>
+		</tr>
+		<tr>
+			<th colspan="3">
+				Select custom fields
+			</th>
+		</tr>
+
+@{
+	int i = 0;
+	foreach (AvaliableFields field in Model.SelectedFields)
+	{
+		<tr>
+			<td></td>
+			<td>
+				@Html.DropDownList(
+				  "Select" + i,
+				  Model.Fields
+					  .Where(x => x.IsUsed == false || x.Field == field)
+					  .Select(x => new SelectListItem
+					  {
+						  Text = x.Field.ToString(),
+						  Value = x.Field.ToString(),
+						  Selected = field == x.Field
+					  }),
+				  new { onchange = "$('#Save').click();", Name = "SelectedFields", @class = "form-control" }
+			  )
+			</td>
+
+			<td>
+				@Ajax.ActionLink(
+					"X",
+					"RemoveField",
+					new { controller = "ManageTemplate", action = "RemoveField", id = i, Separator = Model.Separator, SelectedFields = String.Join("-", Model.SelectedFields.Select(x => (int)x).ToArray()) },
+					new AjaxOptions()
+					{
+						HttpMethod = "POST",
+						InsertionMode = InsertionMode.Replace,
+						UpdateTargetId = "result"
+					},
+					new { @class = "btn btn-default" }
+				)
+				@{i++;}
+			</td>
+		</tr>
+	}
+
+		<tr>
+			<td>
+				@{if (Model.Fields.Count != Model.SelectedFields.Count)
+					{
+						@Ajax.ActionLink(
+							"+",
+							"AddField",
+							new { controller = "ManageTemplate", action = "AddField", Separator = Model.Separator, SelectedFields = String.Join("-", Model.SelectedFields.Select(x => (int)x).ToArray()) },
+							new AjaxOptions()
+							{ HttpMethod = "POST", InsertionMode = InsertionMode.Replace, UpdateTargetId = "result" },
+							new { @class = "btn btn-default" }
+							)
+					}
+				}
+			</td>
+			<td></td>
+			<td></td>
+		</tr>
+
+		<tr>
+			<th colspan="3">
+				Select separator
+			</th>
+		</tr>
+
+		<tr>
+			<td></td>
+			<td>
+				@Html.DropDownListFor(
+					x => x.Separator,
+					Enum.GetValues(typeof(Separators))
+						.Cast<Separators>()
+						.Select(x => new SelectListItem
+						{
+							Value = x.ToString(),
+							Text = x.ToString(),
+							Selected = x == Model.Separator
+						}),
+					new { onchange = "$('#Save').click();", @class = "form-control" }
+					)
+			</td>
+			<td></td>
+		</tr>
+		}
+	</tbody>
+</table>

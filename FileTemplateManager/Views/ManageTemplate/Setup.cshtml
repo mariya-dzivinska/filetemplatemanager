@@ -1,0 +1,14 @@
+﻿@model FileTemplateManager.Models.TemplateModel
+<h2>Setup</h2>
+
+
+@using (Ajax.BeginForm("Setup", "ManageTemplate", new AjaxOptions() { HttpMethod = "POST", InsertionMode = InsertionMode.Replace, UpdateTargetId = "result" }))
+{
+	<div id="result">
+		@Html.Partial("SetupForm", Model)
+	</div>
+	
+	<p>
+		<input id="Save" type="submit" value="Save" class="btn btn-default" />
+	</p>
+}
