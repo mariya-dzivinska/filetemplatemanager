@@ -3,13 +3,14 @@
 
 <table id="tableFields" class="table table-bordered">
 	<tbody id="tableBody">
+		@Html.HiddenFor(m => m.SelectedProjectId, new { Name = "oldSelectedProjectId" })
 		<tr>
-			<td>@Html.Label("Sample File Name")</td>
+			<td>@Html.Label("Sample File Name", new { @class = "control-label col-md-2" })</td>
 			<td colspan="2">@Html.DisplayTextFor(f => f.SampleFileName)</td>
 		</tr>
 		<tr>
 			<th colspan="3">
-				Select custom fields
+				@Html.Label("Select custom fields", new { @class = "control-label col-md-2" })
 			</th>
 		</tr>
 
@@ -21,17 +22,17 @@
 			<td></td>
 			<td>
 				@Html.DropDownList(
-				  "Select" + i,
-				  Model.Fields
-					  .Where(x => x.IsUsed == false || x.Field == field)
-					  .Select(x => new SelectListItem
-					  {
-						  Text = x.Field.ToString(),
-						  Value = x.Field.ToString(),
-						  Selected = field == x.Field
-					  }),
-				  new { onchange = "$('#Save').click();", Name = "SelectedFields", @class = "form-control" }
-			  )
+					"Select" + i,
+						Model.Fields
+						.Where(x => x.IsUsed == false || x.Field == field)
+						.Select(x => new SelectListItem
+						{
+							Text = x.Field.ToString(),
+							Value = x.Field.ToString(),
+							Selected = field == x.Field
+						}),
+				new { onchange = "$('#Save').click();", Name = "SelectedFields", @class = "form-control" }
+	)
 			</td>
 
 			<td>
@@ -45,12 +46,12 @@
 						InsertionMode = InsertionMode.Replace,
 						UpdateTargetId = "result"
 					},
-					new { @class = "btn btn-default" }
+					new { @class = "btn btn-default btn-danger" }
 				)
 				@{i++;}
 			</td>
 		</tr>
-	}
+						}
 
 		<tr>
 			<td>
@@ -62,8 +63,8 @@
 							new { controller = "ManageTemplate", action = "AddField", Separator = Model.Separator, SelectedFields = String.Join("-", Model.SelectedFields.Select(x => (int)x).ToArray()) },
 							new AjaxOptions()
 							{ HttpMethod = "POST", InsertionMode = InsertionMode.Replace, UpdateTargetId = "result" },
-							new { @class = "btn btn-default" }
-							)
+							new { @class = "btn btn-default btn-success" }
+						)
 					}
 				}
 			</td>
@@ -73,7 +74,7 @@
 
 		<tr>
 			<th colspan="3">
-				Select separator
+				@Html.Label("Select separator", new { @class = "control-label col-md-2" })
 			</th>
 		</tr>
 
@@ -91,10 +92,10 @@
 							Selected = x == Model.Separator
 						}),
 					new { onchange = "$('#Save').click();", @class = "form-control" }
-					)
-			</td>
-			<td></td>
-		</tr>
+				)
+				</td>
+				<td></td>
+			</tr>
 		}
 	</tbody>
 </table>

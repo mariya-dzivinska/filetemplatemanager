@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DAL.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,6 +9,7 @@ namespace FileTemplateManager.Models
 	{
 		public TemplateModel() :
 			this(
+				1,
 				selectedFields: new[]
 				{
 					AvaliableFields.ProjectId,
@@ -18,12 +20,29 @@ namespace FileTemplateManager.Models
 		{
 		}
 
-		public TemplateModel(AvaliableFields[] selectedFields, Separators separator)
+		public TemplateModel(int projectId, AvaliableFields[] selectedFields, Separators separator)
 		{
 			SelectedFields = selectedFields.ToList();
 
 			Separator = separator;
+
+			Projects = new List<Project>()
+			{
+				new Project()
+				{
+					ProjectId = 1,
+					ProjectName = "Test project 1"
+				},
+				new Project()
+				{
+					ProjectId = 2,
+					ProjectName = "Test project 2"
+				}
+			};
+
+			SelectedProjectId = Projects.First(x => x.ProjectId == projectId).ProjectId;
 		}
+
 
 		public List<AvaliableFields> SelectedFields { get; set; }
 
@@ -61,7 +80,9 @@ namespace FileTemplateManager.Models
 			}
 		}
 
+		public int SelectedProjectId { get; set; }
 
+		public IEnumerable<Project> Projects { get; set; }
 	}
 
 }
