@@ -1,0 +1,90 @@
+﻿@model FileTemplateManager.Models.AnswerModel
+
+@{
+	ViewBag.Title = "SetAnswer";
+}
+
+<h2>Set Answer</h2>
+
+<form id="form1" name="form1" method="post" enctype="multipart/form-data" action="~/api/upload/@Model.SelectedQuestion.QuestionId">
+	<table class="table table-bordered">
+		<tr>
+			<th>
+				@Html.Label("Project", new { @class = "control-label col-md-2" })
+			</th>
+			<th>
+				@Html.DropDownList(
+					"selectedProject",
+					Model.Projects
+						.Select(p => new SelectListItem()
+						{
+							Text = p.ProjectName,
+							Value = p.ProjectId.ToString(),
+							Selected = Model.SelectedProject.ProjectId == p.ProjectId
+						}),
+					new { onchange = "selectedProjectOnChanged()", @class = "form-control" }
+				)
+			</th>
+		</tr>
+		<tr>
+			<th>
+				@Html.Label("Question", new { @class = "control-label col-md-2" })
+			</th>
+			<th>
+				@Html.DropDownList(
+					"selectedQuestion",
+					Model.Questions
+						.Select(q => new SelectListItem()
+						{
+							Text = q.Text,
+							Value = q.QuestionId.ToString()
+						}),
+					new { onchange = "selectedQuestionOnChanged()", @class = "form-control" }
+				)
+			</th>
+		</tr>
+		<tr>
+			<th>
+				@Html.Label("Upload image", new { @class = "control-label col-md-2" })
+			</th>
+			<th>
+				<input type="file" name="image" accept="image/*" />
+			</th>
+		</tr>
+		<tr>
+			<th colspan="3">
+				<input type="submit" name="submit" value="Upload" class="btn-default btn-success" />
+			</th>
+		</tr>
+	</table>
+</form>
+
+<script type="text/javascript">
+	function selectedProjectOnChanged() {
+		var projectId = $('#selectedProject').val();
+
+		$.ajax({
+			url: '/Home/GetQuestions',
+			type: "GET",
+			dataType: "JSON",
+			data: { projectId: projectId },
+			success: function (questions) {
+				$("#selectedQuestion").html(""); // clear before appending new list
+				$.each(questions, function (i, question) {
+					$("#selectedQuestion").append(
+						$('<option></option>').val(question.QuestionId).html(question.Text));
+				});
+			}
+		});
+
+		ReloadQuestions();
+	}
+
+	function selectedQuestionOnChanged() {
+		var questionId = $('#selectedQuestion').val();
+
+		$("form").attr("action", "/api/upload/" + questionId);
+
+	}
+</script>
+

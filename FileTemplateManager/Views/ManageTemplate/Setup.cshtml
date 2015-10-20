@@ -12,15 +12,11 @@
 				Value = x.ProjectId.ToString(),
 				Selected = x.ProjectId == Model.SelectedProjectId
 			}),
-		new { onchange = "$('#Save').click();",  @class = "form-control" }
+		new { onchange = "$('form').submit();",  @class = "form-control" }
 	)
 	<p/>
 
 	<div id="result">
 		@Html.Partial("SetupForm", Model)
 	</div>
-	
-	<p>
-		<input id="Save" type="submit" value="Save" class="btn-default btn-success" />
-	</p>
 }

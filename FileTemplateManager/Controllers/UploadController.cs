@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Bussiness;
+using FileTemplateManager.Providers;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,24 +13,31 @@ using System.Web.Http;
 
 namespace FileTemplateManager.Controllers
 {
-	public class UploadController : ApiController
+	public sealed class UploadController : ApiController
 	{
-		public async Task<HttpResponseMessage> PostFile()
+		private readonly IProjectService projectService;
+
+		public UploadController(IProjectService projectService)
+		{
+			this.projectService = projectService;
+		}
+
+		public async Task<HttpResponseMessage> PostFile(int id)
 		{
 			if (!Request.Content.IsMimeMultipartContent())
 			{
 				throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
 			}
 
+			int questionId = id;
+
 			string root = HttpContext.Current.Server.MapPath("~/App_Data");
-			var provider = new MultipartFormDataStreamProvider(root);
+			//var provider = new MultipartFormDataStreamProvider(root);
+			var provider = new ProjectMultipartFormDataStreamProvider(projectService, questionId);
 
 			try
 			{
 				await Request.Content.ReadAsMultipartAsync(provider);
-
-				string selectedProject = provider.FormData["selectedProject"];
-				string selectedQuestion = provider.FormData["selectedQuestion"];
 
 				MultipartFileData file = provider.FileData.SingleOrDefault();
 				if (file == null)

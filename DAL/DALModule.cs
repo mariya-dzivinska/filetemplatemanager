@@ -19,6 +19,11 @@ namespace DAL
 				.RegisterType<ProjectRepository>()
 				.As<IProjectRepository>()
 				.InstancePerLifetimeScope();
+
+			builder
+				.RegisterType<QuestionRepository>()
+				.As<IQuestionRepository>()
+				.InstancePerLifetimeScope();
 		}
 	}
 }

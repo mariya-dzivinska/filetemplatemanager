@@ -8,12 +8,12 @@ namespace FileTemplateManager.Models
 {
 	public class AnswerModel
 	{
-		public List<Project> Projects { get; set; }
-		public List<Question> Questions { get; set; }
-		public HttpPostedFileBase ImageFile { get; set; }
+		public IEnumerable<Project> Projects { get; set; }
 
-		public AnswerModel()
-		{
-		}
+		public Project SelectedProject { get; set; }
+
+		public IEnumerable<Question> Questions { get; set; }
+		public HttpPostedFileBase ImageFile { get; set; }
+		public Question SelectedQuestion { get; set; }
 	}
 }

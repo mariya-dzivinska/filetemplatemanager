@@ -1,4 +1,5 @@
 ﻿using Bussiness;
+using DAL.Data;
 using FileTemplateManager.Models;
 using System;
 using System.Collections.Generic;
@@ -25,14 +26,23 @@ namespace FileTemplateManager.Controllers
 		public ActionResult SetAnswer()
 		{
 			var model = new AnswerModel();
-			model.Projects = projectService.GetProjects().ToList();
-			model.Questions = projectService.GetProjectById(model.Projects.First().ProjectId).Questions;
+			model.Projects = projectService.GetProjects();
+			model.SelectedProject = model.Projects.FirstOrDefault();
+			model.Questions = model.SelectedProject.Questions;
+			model.SelectedQuestion = model.SelectedProject.Questions.FirstOrDefault();
 			return View(model);
 		}
 
-		public ActionResult GetQuestions(int project)
+		public ActionResult GetQuestions(int projectId)
 		{
-			var questions = projectService.GetProjectById(project).Questions;
+			var questions = projectService
+				.GetProjectById(projectId)
+				.Questions
+				.Select(x => new
+				{
+					QuestionId = x.QuestionId,
+					Text = x.Text
+				});
 			return Json(questions, JsonRequestBehavior.AllowGet);
 		}
 	}

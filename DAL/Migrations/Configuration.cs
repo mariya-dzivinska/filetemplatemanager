@@ -30,6 +30,7 @@ namespace DAL.Migrations
 				new Project()
 				{
 					ProjectName = "Test project 1",
+					Template = "Dot;ProjectId;QuestionId",
 					Questions = new List<Question>()
 					{
 						new Question()
@@ -47,6 +48,7 @@ namespace DAL.Migrations
 				new Project()
 				{
 					ProjectName = "Test project 2",
+					Template = "Dot;ProjectId;QuestionId",
 					Questions = new List<Question>()
 					{
 						new Question()

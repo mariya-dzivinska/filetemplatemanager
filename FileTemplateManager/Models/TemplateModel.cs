@@ -1,4 +1,6 @@
-﻿using DAL.Data;
+﻿using Bussiness;
+using DAL.Data;
+using DAL.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,26 +25,9 @@ namespace FileTemplateManager.Models
 		public TemplateModel(int projectId, AvaliableFields[] selectedFields, Separators separator)
 		{
 			SelectedFields = selectedFields.ToList();
-
 			Separator = separator;
-
-			Projects = new List<Project>()
-			{
-				new Project()
-				{
-					ProjectId = 1,
-					ProjectName = "Test project 1"
-				},
-				new Project()
-				{
-					ProjectId = 2,
-					ProjectName = "Test project 2"
-				}
-			};
-
-			SelectedProjectId = Projects.First(x => x.ProjectId == projectId).ProjectId;
+			SelectedProjectId = projectId;
 		}
-
 
 		public List<AvaliableFields> SelectedFields { get; set; }
 

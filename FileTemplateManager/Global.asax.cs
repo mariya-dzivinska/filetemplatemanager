@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
+using Autofac.Integration.WebApi;
 using Bussiness;
 using DAL;
 using FileTemplateManager.App_Start;
@@ -18,11 +19,16 @@ namespace FileTemplateManager
 			RouteConfig.RegisterRoutes(RouteTable.Routes);
 
 			ContainerBuilder builder = new ContainerBuilder();
+
 			builder.RegisterControllers(typeof(MvcApplication).Assembly);
+			builder.RegisterApiControllers(typeof(MvcApplication).Assembly);
 			builder.RegisterModule<BussinessModule>();
 			builder.RegisterModule<DALModule>();
+
 			IContainer container = builder.Build();
-			DependencyResolver.SetResolver( new AutofacDependencyResolver(container)); 
+
+			DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
+			GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver(container);
 		}
 	}
 }
