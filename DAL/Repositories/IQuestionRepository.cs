@@ -10,5 +10,7 @@ namespace DAL.Repositories
 	public interface IQuestionRepository
 	{
 		Question GetById(int questionId);
+
+		void SaveAnswer(int questionId);
 	}
 }

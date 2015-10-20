@@ -20,5 +20,7 @@ namespace Bussiness
 		string GetTemplatePattern(int questionId);
 
 		AvaliableFields[] GetTempleteItems(string template, out Separators separator);
-	}
+
+		void SaveAnswerByQuestion(int questionId);
+    }
 }

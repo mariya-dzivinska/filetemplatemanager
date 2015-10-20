@@ -32,7 +32,6 @@ namespace FileTemplateManager.Controllers
 			int questionId = id;
 
 			string root = HttpContext.Current.Server.MapPath("~/App_Data");
-			//var provider = new MultipartFormDataStreamProvider(root);
 			var provider = new ProjectMultipartFormDataStreamProvider(projectService, questionId);
 
 			try
@@ -46,6 +45,8 @@ namespace FileTemplateManager.Controllers
 				}
 
 				FileInfo fileInfo = new FileInfo(file.LocalFileName);
+
+				projectService.SaveAnswerByQuestion(questionId);
 
 				return new HttpResponseMessage()
 				{

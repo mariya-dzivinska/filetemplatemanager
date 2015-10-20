@@ -33,12 +33,9 @@ namespace Bussiness.Default
 		public Project UpdateProjectTemplate(int projectId, string template)
 		{
 			var project = projectRepository.GetById(projectId);
-
 			project.Template = template;
-
-			projectRepository.Update(project);
-
-			return project;
+			var updatedProject = projectRepository.Update(project);
+			return updatedProject;
 		}
 
 		public string GetTemplatePattern(int questionId)
@@ -92,6 +89,11 @@ namespace Bussiness.Default
 			}
 
 			return result.ToArray();
+		}
+
+		public void SaveAnswerByQuestion(int questionId)
+		{
+			questionRepository.SaveAnswer(questionId);
 		}
 	}
 }
