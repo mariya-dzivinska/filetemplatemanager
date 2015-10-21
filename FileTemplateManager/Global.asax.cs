@@ -22,6 +22,8 @@ namespace FileTemplateManager
 
 			builder.RegisterControllers(typeof(MvcApplication).Assembly);
 			builder.RegisterApiControllers(typeof(MvcApplication).Assembly);
+			builder.RegisterModule<AutofacWebTypesModule>();
+			builder.RegisterModule<WebModule>();
 			builder.RegisterModule<BussinessModule>();
 			builder.RegisterModule<DALModule>();
 

@@ -117,8 +117,6 @@ namespace FileTemplateManager.Controllers
 			return model;
 		}
 
-		
-
 		private string ComposeTemplate(TemplateModel model)
 		{
 			string[] result = new[] {
