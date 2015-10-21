@@ -10,7 +10,5 @@ namespace DAL.Data
 	{
 		public int AnswerId { get; set; }
 		public Question Question { get; set; }
-		public string FileName { get; set; }
-		public int Image { get; set; }
 	}
 }

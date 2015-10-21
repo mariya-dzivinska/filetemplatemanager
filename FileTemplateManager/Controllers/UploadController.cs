@@ -15,11 +15,19 @@ namespace FileTemplateManager.Controllers
 {
 	public sealed class UploadController : ApiController
 	{
+		private readonly HttpContextBase httpContextBase;
 		private readonly IProjectService projectService;
+		private readonly IProjectMultipartFormDataStreamProviderFactory factory;
 
-		public UploadController(IProjectService projectService)
+		public UploadController(
+			IProjectService projectService,
+			HttpContextBase httpContextBase,
+			IProjectMultipartFormDataStreamProviderFactory factory
+		)
 		{
 			this.projectService = projectService;
+			this.httpContextBase = httpContextBase;
+			this.factory = factory;
 		}
 
 		public async Task<HttpResponseMessage> PostFile(int id)
@@ -30,10 +38,8 @@ namespace FileTemplateManager.Controllers
 			}
 
 			int questionId = id;
-
-			string root = HttpContext.Current.Server.MapPath("~/App_Data");
-			//var provider = new MultipartFormDataStreamProvider(root);
-			var provider = new ProjectMultipartFormDataStreamProvider(projectService, questionId);
+			string root = httpContextBase.Server.MapPath("~/App_Data");
+			MultipartFormDataStreamProvider provider = factory.Create(questionId, root);
 
 			try
 			{
@@ -46,6 +52,8 @@ namespace FileTemplateManager.Controllers
 				}
 
 				FileInfo fileInfo = new FileInfo(file.LocalFileName);
+
+				projectService.SaveAnswerByQuestion(questionId);
 
 				return new HttpResponseMessage()
 				{

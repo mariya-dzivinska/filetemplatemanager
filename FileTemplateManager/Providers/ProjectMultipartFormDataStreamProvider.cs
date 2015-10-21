@@ -18,8 +18,8 @@ namespace FileTemplateManager.Providers
 		private readonly IProjectService projectService;
 		private readonly int questionId;
 
-		public ProjectMultipartFormDataStreamProvider(IProjectService projectService, int questionId)
-			: base(HttpContext.Current.Server.MapPath("~/App_Data"))
+		public ProjectMultipartFormDataStreamProvider(IProjectService projectService, int questionId, string rootPath)
+			: base(rootPath)
 		{
 			this.projectService = projectService;
 			this.questionId = questionId;

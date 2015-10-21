@@ -31,13 +31,14 @@ namespace DAL.Repositories.Default
 			}
 		}
 
-		public void Update(Project project)
+		public Project Update(Project project)
 		{
 			using (DataContext context = new DataContext())
 			{
-				var updatedProject = context.Entry(project);
-				updatedProject.State = EntityState.Modified;
+				var updatedProject = context.Projects.Attach(project);
+				context.Entry(project).State = EntityState.Modified;
 				context.SaveChanges();
+				return updatedProject;
 			}
 		}
     }

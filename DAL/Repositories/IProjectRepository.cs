@@ -13,6 +13,6 @@ namespace DAL.Repositories
 
 		Project GetById(int id);
 
-		void Update(Project project);
+		Project Update(Project project);
 	}
 }

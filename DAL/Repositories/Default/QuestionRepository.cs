@@ -22,5 +22,19 @@ namespace DAL.Repositories.Default
 				return question;
 			}
 		}
+
+		public void SaveAnswer(int questionId)
+		{
+			using (DataContext context = new DataContext())
+			{
+				var questionToUpdate = context.Questions.FirstOrDefault(q => q.QuestionId == questionId);
+				var answer = new Answer()
+				{
+					Question = questionToUpdate
+				};
+				context.Answers.Add(answer);
+				context.SaveChanges();
+			}
+		}
 	}
 }
