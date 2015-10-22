@@ -81,9 +81,8 @@
 
 	function selectedQuestionOnChanged() {
 		var questionId = $('#selectedQuestion').val();
-
-		$("form").attr("action", "/api/upload/" + questionId);
-
+		var route = '@Url.RouteUrl("DefaultApi", new { httproute = true, controller = "Upload" }).ToString()';
+		$("form").attr("action", route + "\/" + questionId);
 	}
 </script>
 
