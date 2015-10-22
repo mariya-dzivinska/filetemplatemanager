@@ -24,6 +24,12 @@ namespace DAL
 				.RegisterType<QuestionRepository>()
 				.As<IQuestionRepository>()
 				.InstancePerLifetimeScope();
+
+			builder
+				.RegisterType<FileRepository>()
+				.As<IFileRepository>()
+				.InstancePerLifetimeScope();
 		}
+
 	}
 }

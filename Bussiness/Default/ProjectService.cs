@@ -12,11 +12,13 @@ namespace Bussiness.Default
 	{
 		private readonly IProjectRepository projectRepository;
 		private readonly IQuestionRepository questionRepository;
+		private readonly IFileRepository fileRepository;
 
-		public ProjectService(IProjectRepository projectRepository, IQuestionRepository questionRepository)
+		public ProjectService(IProjectRepository projectRepository, IQuestionRepository questionRepository, IFileRepository fileRepository)
 		{
 			this.projectRepository = projectRepository;
 			this.questionRepository = questionRepository;
+			this.fileRepository = fileRepository;
 		}
 
 		public IEnumerable<Project> GetProjects()
@@ -38,8 +40,45 @@ namespace Bussiness.Default
 			return updatedProject;
 		}
 
-		public string GetTemplatePattern(int questionId)
+		public string GetFileName(int questionId)
 		{
+			string fileName = GetFilledTempelete(questionId);
+
+			int index = GetFileIndex(fileName);
+
+			if (index > 0)
+			{
+				fileName = fileName + "." + index;
+			}
+
+			return fileName;
+		}
+
+
+		public AvaliableFields[] GetTempleteItems(string template, out Separators separator)
+		{
+			List<AvaliableFields> result = new List<AvaliableFields>();
+			string[] data = template.Split(';');
+
+			separator = (Separators)Enum.Parse(typeof(Separators), data[0]);
+
+			for (int i = 1; i < data.Length; i++)
+			{
+				AvaliableFields field = (AvaliableFields)Enum.Parse(typeof(AvaliableFields), data[i]);
+				result.Add(field);
+			}
+
+			return result.ToArray();
+		}
+
+		public void SaveAnswerByQuestion(int questionId)
+		{
+			questionRepository.SaveAnswer(questionId);
+		}
+
+		private string GetFilledTempelete(int questionId)
+		{
+
 			Question question = questionRepository.GetById(questionId);
 
 			Separators separator;
@@ -72,28 +111,17 @@ namespace Bussiness.Default
 				}
 			}
 
-			return string.Join(separator == Separators.Dash ? "-" : ".", result) + "{0}{1}";
+			string template = string.Join(separator == Separators.Dash ? "-" : ".", result);
+
+			return template;
 		}
 
-		public AvaliableFields[] GetTempleteItems(string template, out Separators separator)
+
+		public int GetFileIndex(string fileName)
 		{
-			List<AvaliableFields> result = new List<AvaliableFields>();
-			string[] data = template.Split(';');
+			int index = fileRepository.GetIndicator(fileName);
 
-			separator = (Separators)Enum.Parse(typeof(Separators), data[0]);
-
-			for (int i = 1; i < data.Length; i++)
-			{
-				AvaliableFields field = (AvaliableFields)Enum.Parse(typeof(AvaliableFields), data[i]);
-				result.Add(field);
-			}
-
-			return result.ToArray();
-		}
-
-		public void SaveAnswerByQuestion(int questionId)
-		{
-			questionRepository.SaveAnswer(questionId);
+			return index;
 		}
 	}
 }

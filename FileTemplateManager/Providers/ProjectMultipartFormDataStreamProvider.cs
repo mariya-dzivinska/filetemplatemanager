@@ -27,25 +27,25 @@ namespace FileTemplateManager.Providers
 
 		public override string GetLocalFileName(HttpContentHeaders headers)
 		{
-			string pattern = projectService.GetTemplatePattern(questionId);
+			string fileName = projectService.GetFileName(questionId);
 			string extension = Path.GetExtension(headers.ContentDisposition.FileName.Replace("\"", ""));
 
-			string fileName = GetNextFileName(pattern, extension);
+			fileName = fileName + extension;
 
 			return fileName;
 		}
 
-		private string GetNextFileName(string pattern, string extention)
-		{
-			string fileName = string.Format(pattern, string.Empty, extention);
-			int i = 1;
-			while (File.Exists(Path.Combine(this.RootPath, fileName)))
-			{
-				string incrementer = "." + (i++);
-				fileName = string.Format(pattern, incrementer, extention);
-			}
+		//private string GetNextFileName(string pattern, string extention)
+		//{
+		//	string fileName = string.Format(pattern, string.Empty, extention);
+		//	int i = 1;
+		//	while (File.Exists(Path.Combine(this.RootPath, fileName)))
+		//	{
+		//		string incrementer = "." + (i++);
+		//		fileName = string.Format(pattern, incrementer, extention);
+		//	}
 
-			return fileName;
-		}
+		//	return fileName;
+		//}
 	}
 }

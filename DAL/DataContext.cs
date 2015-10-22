@@ -13,6 +13,8 @@ namespace DAL
 
 		public DbSet<Answer> Answers { get; set; }
 
+		public DbSet<FileIndicator> FileIndicators { get; set; }
+
 		internal DataContext() : base("DataContext")
 		{
 

@@ -5,8 +5,7 @@
 }
 
 <h2>Set Answer</h2>
-
-<form id="form1" name="form1" method="post" enctype="multipart/form-data" action="~/api/upload/@Model.SelectedQuestion.QuestionId">
+<form id="form1" name="form1" method="post" enctype="multipart/form-data" action="@Url.RouteUrl("DefaultApi", new { httproute = true, controller = "Upload", id = Model.SelectedQuestion.QuestionId })">
 	<table class="table table-bordered">
 		<tr>
 			<th>

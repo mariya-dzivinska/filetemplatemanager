@@ -17,10 +17,12 @@ namespace Bussiness
 
 		Project UpdateProjectTemplate(int projectId, string template);
 
-		string GetTemplatePattern(int questionId);
+		string GetFileName(int questionId);
 
 		AvaliableFields[] GetTempleteItems(string template, out Separators separator);
 
 		void SaveAnswerByQuestion(int questionId);
+
+		int GetFileIndex(string fileName);
     }
 }

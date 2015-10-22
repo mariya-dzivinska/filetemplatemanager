@@ -16,10 +16,10 @@ namespace FileTemplateManager.Tests
 	public class ApiTests
 	{
 		[TestMethod]
-		public async Task PostFile()
+		public void PostFile()
 		{
 			int questionId = 1;
-			int expectedFileCount = 10;
+			int expectedFileCount = 50;
 			string path = Path.GetFullPath(Path.Combine("..\\..\\..\\", "FileTemplateManager", "App_Data"));
 
 			foreach (string file in Directory.GetFiles(path))
@@ -27,29 +27,36 @@ namespace FileTemplateManager.Tests
 				File.Delete(file);
 			}
 
-			for (int i = 0; i < expectedFileCount; i++)
-			{
-				RestClient client = new RestClient("http://localhost/FileTemplateManager/");
-				IRestRequest request = new RestRequest("api/Upload/{id}", Method.POST);
-				request.AddUrlSegment("id", questionId.ToString());
+			IEnumerable<int> counts = Enumerable.Range(0, expectedFileCount);
+			Parallel.ForEach(
+				counts,
+				new ParallelOptions()
+				{
+					MaxDegreeOfParallelism = 30
+				},
+				i =>
+				{
+					RestClient client = new RestClient("http://localhost/FileTemplateManager/");
+					IRestRequest request = new RestRequest("api/Upload/{id}", Method.POST);
+					request.AddUrlSegment("id", questionId.ToString());
 
-				request.AddFile(
-					"test.jpeg",
-					(Stream x) =>
-					{
-						StreamWriter sw = new StreamWriter(x);
-						sw.WriteLine("This is an image.");
-					},
-					"test.jpeg"
-				);
+					request.AddFile(
+						"test.jpeg",
+						(Stream x) =>
+						{
+							StreamWriter sw = new StreamWriter(x);
+							sw.WriteLine("This is an image.");
+						},
+						"test.jpeg"
+					);
 
-				IRestResponse response = await client.ExecuteTaskAsync(request);
+					IRestResponse response = client.Execute(request);
 
-				string content = response.Content;
+					string content = response.Content;
 
-				Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-				Assert.AreEqual("ok", content);
-			}
+					Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+					Assert.AreEqual("ok", content);
+				});
 
 			int count = Directory.GetFiles(path).Count();
 			Assert.AreEqual(expectedFileCount, count);
